@@ -7,10 +7,7 @@ namespace Dashboard.Services;
 public partial class AppDbContext : DbContextBase
 {
     public IServiceScopeFactory _serviceScopeFactory;
-    public AppDbContext()
-    {
-
-    }
+    
 
     [ActivatorUtilitiesConstructor]
     public AppDbContext(DbContextOptions<AppDbContext> options, IServiceScopeFactory serviceScopeFactory) : base(options)

@@ -1,5 +1,6 @@
 using Dashboard.Services;
 using Microsoft.EntityFrameworkCore;
+using Server.Infrastructure.ServiceCollection;
 using Stl.Fusion;
 
 #region Builder
