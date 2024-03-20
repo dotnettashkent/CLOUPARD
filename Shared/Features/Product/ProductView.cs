@@ -5,9 +5,11 @@ namespace Shared.Features.Product
 {
     public partial class ProductView
     {
-        [property : DataMember]
-        [property : JsonPropertyName("id")]
+        [property: DataMember]
+
+        [property: JsonIgnore]
         public Guid Id { get; set; }
+
         [property: DataMember]
         [property: JsonPropertyName("name")]
         public string Name { get; set; } = null!;

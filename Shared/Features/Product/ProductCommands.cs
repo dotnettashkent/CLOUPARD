@@ -11,7 +11,8 @@ namespace Shared.Features
     
     public partial record UpdateProductCommand(
         [property: DataMember] Session? Session,
-        [property: DataMember] ProductView Entity) : ISessionCommand<ProductView>;
+        [property: DataMember] ProductView Entity,
+        [property : DataMember] Guid Id) : ISessionCommand<ProductView>;
 
     public partial record DeleteProductCommand(
         [property: DataMember] Session? Session,

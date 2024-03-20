@@ -114,7 +114,7 @@ namespace Service.Features
             command.Session.IsDefault();
             await using var dbContext = await dbHub.CreateCommandDbContext(cancellationToken);
             var entity = await dbContext.Products
-                .FirstOrDefaultAsync(x => x.Id == command.Entity!.Id);
+                .FirstOrDefaultAsync(x => x.Id == command.Id);
 
             if (entity == null)
                 throw new CustomException("ProductEntity Not Found");

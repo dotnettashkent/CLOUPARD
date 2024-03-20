@@ -1,6 +1,5 @@
 ﻿using Service.Data;
 using Stl.Fusion;
-using Stl.Fusion.Authentication;
 using Stl.Fusion.Extensions;
 using Stl.Fusion.Server;
 using Stl.Rpc;
@@ -17,23 +16,9 @@ namespace Server.Infrastructure.ServiceCollection
             var fusionServer = fusion.AddWebServer();
 
 
-            fusionServer.ConfigureAuthEndpoint(_ => new()
-            {
-                DefaultScheme = "oidc",
-                SignInPropertiesBuilder = (_, properties) =>
-                {
-                    properties.IsPersistent = true;
-                }
-            });
-            fusionServer.ConfigureServerAuthHelper(_ => new()
-            {
-                NameClaimKeys = Array.Empty<string>(),
-            });
-
             fusion.AddSandboxedKeyValueStore();
             fusion.AddOperationReprocessor();
 
-            fusion.AddDbAuthService<AppDbContext, string>();
             fusion.AddDbKeyValueStore<AppDbContext>();
             fusion.AddEbazarServices();
 
