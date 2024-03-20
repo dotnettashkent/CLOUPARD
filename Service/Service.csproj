@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+
+	<ItemGroup>
+		<PackageReference Include="BCrypt.Net-Next" Version="4.0.0" />
+		<PackageReference Include="EF.Audit.Core" Version="1.0.0" />
+		<PackageReference Include="IdentityModel" Version="6.2.0" />
+		
+		
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.2.0" />
+		<PackageReference Include="Stl.Fusion.EntityFramework.Npgsql" Version="6.5.1" />
+		<PackageReference Include="Riok.Mapperly" Version="2.8.0" />
+		<PackageReference Include="Stl.Fusion" Version="6.5.1" />
+		<PackageReference Include="Stl.Fusion.Blazor.Authentication" Version="6.5.1" />
+		<PackageReference Include="Stl.Fusion.EntityFramework" Version="6.5.1" />
+		<PackageReference Include="Stl.Fusion.Ext.Services" Version="6.5.1" />
+		<PackageReference Include="Stl.Generators" Version="6.5.1" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.2.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Shared\Shared.csproj" />
+	</ItemGroup>
+
+</Project>

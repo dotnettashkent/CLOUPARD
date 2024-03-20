@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<SourceGenerator_Override>True</SourceGenerator_Override>
+		<SourceGenerator_ApiVersion>False</SourceGenerator_ApiVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="MemoryPack.Generator" Version="1.9.16">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Stl.Fusion.EntityFramework" Version="6.5.1" />
+		<PackageReference Include="EF.Audit.Core" Version="1.0.0" />
+		<PackageReference Include="Stl.Generators" Version="6.5.1" />
+	</ItemGroup>
+
+
+
+
+</Project>
+
