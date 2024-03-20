@@ -1,6 +1,6 @@
-using Dashboard.Services;
 using Microsoft.EntityFrameworkCore;
 using Server.Infrastructure.ServiceCollection;
+using Service.Data;
 using Stl.Fusion;
 
 #region Builder
@@ -11,12 +11,17 @@ var env = builder.Environment;
 #endregion
 
 #region
-// Register IDbContextFactory<AuditDbContext> before AddDataBase<AppDbContext>
+services.AddDbContextFactory<AppDbContext>(options =>
+{
+    options.UseNpgsql(cfg.GetConnectionString("Default"));
+});
+
 services.AddDbContext<AppDbContext>(options =>
 {
-    // Configure options for AuditDbContext
-    options.UseSqlServer(cfg.GetConnectionString("Default"));
+    // Configure options for AppDbContext
+    options.UseNpgsql(cfg.GetConnectionString("Default"));
 });
+
 #endregion
 
 //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);

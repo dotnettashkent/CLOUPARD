@@ -1,6 +1,5 @@
 ﻿using Shared.Features.Product;
 using Stl.Fusion;
-using Stl.Fusion.Authentication;
 using System.Runtime.Serialization;
 
 namespace Shared.Features

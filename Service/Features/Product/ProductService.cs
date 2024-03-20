@@ -1,6 +1,6 @@
-﻿using Dashboard.Services;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Service.Data;
 using Shared.Features;
 using Shared.Features.Product;
 using Shared.Infrastructures;

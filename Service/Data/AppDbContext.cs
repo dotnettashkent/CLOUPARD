@@ -1,49 +1,63 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Stl.Fusion.EntityFramework;
-using Stl.Fusion.EntityFramework.Authentication;
-using Stl.Fusion.EntityFramework.Extensions;
-using Stl.Fusion.EntityFramework.Operations;
+﻿
+using EF.Audit.Core;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Shared.Features;
+using Stl.Fusion.Authentication.Services;
+using Stl.Fusion.EntityFramework;
+using Stl.Fusion.EntityFramework.Operations;
+using Stl.Fusion.Extensions.Services;
 
-namespace Dashboard.Services;
-
-public partial class AppDbContext : DbContextBase
+namespace Service.Data
 {
-    // Stl.Fusion.EntityFramework tables
-    public DbSet<DbUser<string>> Users { get; protected set; } = null!;
-    public DbSet<DbUserIdentity<string>> UserIdentities { get; protected set; } = null!;
-    public DbSet<DbSessionInfo<string>> Sessions { get; protected set; } = null!;
-    public DbSet<DbKeyValue> KeyValues { get; protected set; } = null!;
-    public DbSet<DbOperation> Operations { get; protected set; } = null!;
-
-    public AppDbContext(DbContextOptions options) : base(options) { }
-
-    public override int SaveChanges()
+    public partial class AppDbContext : DbContextBase
     {
-        AddTimestamps();
-        return base.SaveChanges();
-    }
+        public IServiceScopeFactory _serviceScopeFactory;
 
-    public async Task<int> SaveChangesAsync()
-    {
-        AddTimestamps();
-        return await base.SaveChangesAsync();
-    }
-
-    private void AddTimestamps()
-    {
-        var entities = ChangeTracker.Entries()
-            .Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified));
-
-        foreach (var entity in entities)
+        [ActivatorUtilitiesConstructor]
+        public AppDbContext(DbContextOptions<AppDbContext> options,
+            IServiceScopeFactory serviceScopeFactory) : base(options)
         {
-            var now = DateTime.UtcNow; // current datetime
+            _serviceScopeFactory = serviceScopeFactory;
+        }
 
-            if (entity.State == EntityState.Added)
+        // Stl.Fusion.EntityFramework tables
+        public DbSet<DbUser<string>> StlFusionUsers { get; protected set; } = null!;
+        public DbSet<DbUserIdentity<string>> UserIdentities { get; protected set; } = null!;
+        public DbSet<DbSessionInfo<string>> Sessions { get; protected set; } = null!;
+        public DbSet<DbKeyValue> KeyValues { get; protected set; } = null!;
+        public DbSet<DbOperation> Operations { get; protected set; } = null!;
+
+        public override int SaveChanges()
+        {
+            AddTimestamps();
+            return base.SaveChanges();
+
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            AddTimestamps();
+            return base.SaveChanges();
+
+        }
+
+        private void AddTimestamps()
+        {
+            var entities = ChangeTracker.Entries()
+                .Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified || x.State == EntityState.Detached || x.State == EntityState.Unchanged || x.State == EntityState.Deleted));
+
+            foreach (var entity in entities)
             {
-                ((BaseEntity)entity.Entity).CreatedAt = now;
+                var now = DateTime.UtcNow; // current datetime
+
+                if (entity.State == EntityState.Added)
+                {
+                    ((BaseEntity)entity.Entity).CreatedAt = now;
+                }
+                ((BaseEntity)entity.Entity).UpdatedAt = now;
             }
-            ((BaseEntity)entity.Entity).UpdatedAt = now;
+
         }
     }
 }

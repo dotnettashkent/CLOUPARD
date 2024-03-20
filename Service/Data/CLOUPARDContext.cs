@@ -1,19 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Stl.Fusion.EntityFramework;
-using Microsoft.Extensions.DependencyInjection;
 using Shared.Features;
+using Shared.Infrastructures;
+using Stl.Fusion.Authentication;
 
-namespace Dashboard.Services;
-public partial class AppDbContext : DbContextBase
+namespace Service.Data
 {
-    public IServiceScopeFactory _serviceScopeFactory;
-    
-
-    [ActivatorUtilitiesConstructor]
-    public AppDbContext(DbContextOptions<AppDbContext> options, IServiceScopeFactory serviceScopeFactory) : base(options)
+    public partial class AppDbContext
     {
-        _serviceScopeFactory = serviceScopeFactory;
-    }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+        }
 
-    public virtual DbSet<ProductEntity> Products { get; set; }
+        public virtual DbSet<ProductEntity> Products { get; set; }
+    }
 }
