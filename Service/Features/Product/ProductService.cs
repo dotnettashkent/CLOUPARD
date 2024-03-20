@@ -1,16 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Stl.Async;
+using Stl.Fusion;
 using Service.Data;
 using Shared.Features;
-using Shared.Features.Product;
-using Shared.Infrastructures;
-using Shared.Infrastructures.Extensions;
-using Stl.Async;
-using Stl.Fusion;
-using Stl.Fusion.Authentication;
-using Stl.Fusion.EntityFramework;
-using System.ComponentModel.DataAnnotations;
 using System.Reactive;
+using Shared.Infrastructures;
+using Shared.Features.Product;
+using Stl.Fusion.EntityFramework;
+using Microsoft.EntityFrameworkCore;
+using Shared.Infrastructures.Extensions;
+using Microsoft.Extensions.Configuration;
+using System.ComponentModel.DataAnnotations;
 
 namespace Service.Features
 {
@@ -33,11 +32,11 @@ namespace Service.Features
             var dbContext = dbHub.CreateDbContext();
             await using var _ = dbContext.ConfigureAwait(false);
             var product = from s in dbContext.Products select s;
-            if (!String.IsNullOrEmpty(options.search))
+            if (!String.IsNullOrEmpty(options.Search))
             {
                 product = product.Where(s =>
-                         s.Name != null && s.Name.Contains(options.search)
-                         || s.Description.Contains(options.search)
+                         s.Name != null && s.Name.Contains(options.Search)
+                         || s.Description.Contains(options.Search)
                 );
             }
 
@@ -46,8 +45,8 @@ namespace Service.Features
 
             var count = await product.AsNoTracking().CountAsync();
             var items = await product.AsNoTracking().Paginate(options).ToListAsync();
-            decimal totalPage = (decimal)count / (decimal)options.page_size;
-            return new TableResponse<ProductView>() { Items = items.MapToViewList(), TotalItems = count, AllPage = (int)Math.Ceiling(totalPage), CurrentPage = options.page };
+            decimal totalPage = (decimal)count / (decimal)options.PageSize;
+            return new TableResponse<ProductView>() { Items = items.MapToViewList(), TotalItems = count, AllPage = (int)Math.Ceiling(totalPage), CurrentPage = options.Page };
         }
         public async virtual Task<ProductView> GetById(Guid Id, CancellationToken cancellationToken = default)
         {
@@ -137,12 +136,17 @@ namespace Service.Features
             return entity;
 
         }
-        
-        private void Sorting(ref IQueryable<ProductEntity> offering, TableOptions options) => offering = options.sort_label switch
+
+        private void Sorting(ref IQueryable<ProductEntity> offering, TableOptions options)
         {
-            "Name" => offering.Ordering(options, o => o.Name),
-            "Description" => offering.Ordering(options, o => o.Description)
-        };
+            offering = options.SortLabel switch
+            {
+                "Name" => offering.Ordering(options, o => o.Name),
+                "Description" => offering.Ordering(options, o => o.Description),
+                _ => offering.Ordering(options,o => o.Id)
+            };
+        }
+
         #endregion
 
     }
